@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 知道旅行代碼（網址裡那串）的人才能讀寫；不能列出別人的旅行
+    match /trips/{tripId} {
+      allow get, create, update: if true;
+      allow list, delete: if false;
+      match /expenses/{expenseId} {
+        allow read, create, update, delete: if true;
+      }
+    }
+  }
+}
